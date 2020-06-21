@@ -2,76 +2,58 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const methodOverride = require('method-override');
 const Campground = require('./models/campground');
-//const Comment = require('./models/comment');
+const Comment = require('./models/comment');
+const User  = require('./models/user');
 const seedDB = require('./seeds');
 
 
+// requiring routes
+const commentRoutes = require('./routes/comments');
+const campgroundRoutes = require('./routes/campgrounds');
+const indexRoutes = require('./routes/index');
 
-seedDB();
+
+
 mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
+
+//seed the db
+//seedDB();
 
 
-// ================ROUTES======================
+// PASSPORT CONFIG
+app.use(require('express-session')({
+    secret: 'Tater is the cutest dog!',
+    resave: false,
+    saveUninitialized: false
+}));
 
-// landing route
-app.get('/', (req, res) => {
-    res.render('landing');
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
+// middlewre for handling login logout links logic in header
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
 });
 
-app.get('/campgrounds', (req, res) => {
-    Campground.find({},(err, allCampgrounds) => {
-        if(err){
-            console.log('Error');
-        }else{
-            res.render('campgrounds',{campgrounds: allCampgrounds});
-        }
-    })
-});
 
+app.use(indexRoutes);
+app.use('/campgrounds',campgroundRoutes);
+app.use('/campgrounds/:id/comments',commentRoutes);
 
-
-
-
-// new campground
-app.get('/campgrounds/new',(req, res) => {
-    res.render('new');
-})
-
-
-app.post('/campgrounds',(req, res) => {
-    //  get data from form
-    let name = req.body.name;
-    let image = req.body.image;
-    let description = req.body.description;
-    let newCampground = {name: name, image: image, description: description}
-    Campground.create(newCampground, (err, newlyCretedCampground) =>{
-        if(err){
-            console.log('Error!');
-        }else{
-            // redirect back to campground page
-            res.redirect('/campgrounds'); 
-
-        }
-    });
-   
-})
-
-
-
-// SHOW ROUTE
-
-app.get('/campgrounds/:id', (req, res) => {
-    Campground.findById(req.params.id, (err, foundCampground) => {
-        if(err){
-            console.log('error');
-        }else{
-            res.render('show', {foundCampground: foundCampground});
-        }
-    } );
-})
 
 
 
