@@ -1,7 +1,7 @@
 <%- include('../partials/header') %>
 <div class="container">
     <header class="jumbotron">
-            <h1>Welcome To Yelpcamp!</h1>
+            <h1>Welcome To YelPcamp!</h1>
             <p class="lead">View our hand-picked campgrounds from all over the world</p> 
             <p>
                 <a class="btn btn-info" href="/campgrounds/new">Add New Campground</a>
@@ -16,7 +16,7 @@
                     <div class="card-title">
                         <h4><%= campground.name %></h3>  
                     </div>
-                    <a class="btn btn-info" href="/campgrounds/<%= campground._id %>">More Info</a>
+                    <a class="show-btn btn btn-info" href="/campgrounds/<%= campground._id %>">More Info</a>
                 </div>
             </div>
         <% }); %>

@@ -2,15 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
 
+// we require a directory it will look for index file
+const middleware = require('../middleware');
 
 
-// middleware
-const isLoggedIn = (req, res, next) => {
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect('/login');
-}
+
 
 // all campground
 router.get('/', (req, res) => {
@@ -25,15 +21,14 @@ router.get('/', (req, res) => {
 
 
 
-
 // new campground
-router.get('/new', isLoggedIn, (req, res) => {
+router.get('/new', middleware.isLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 })
 
 
 // new campground save to db
-router.post('/', isLoggedIn, (req, res) => {
+router.post('/', middleware.isLoggedIn, (req, res) => {
     //  get data from form
     let name = req.body.name;
     let image = req.body.image;
@@ -72,26 +67,35 @@ router.get('/:id', (req, res) => {
 
 
 //EDit campground
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', middleware.checkCampgroundOwnership, (req, res) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
-        if(err){
-            res.redirect('/camgrounds');
-        }else{
-            res.render('campgrounds/edit', {campground: foundCampground});
-        }
+        res.render('campgrounds/edit', {campground: foundCampground});
+    });    
+});
+
+
+// Update campground
+router.put("/:id", middleware.checkCampgroundOwnership, (req, res) => {
+    // find and update the correct campground
+    Campground.findByIdAndUpdate(req.params.id, req.body.campground, (err, updatedCampground) => {
+       if(err){
+           res.redirect("/campgrounds");
+       } else {
+           //redirect somewhere(show page)
+           res.redirect("/campgrounds/" + req.params.id);
+       }
     });
 });
 
-//Update campground
-router.post('/:id', (req, res) => {
-    //find and update the correct campground and redirect
-    Campground.findByIdAndUpdate(req.params.id, req.body.campground, (err, updatedCampground) => {
+// Destroy campground
+router.delete('/:id', middleware.checkCampgroundOwnership , (req, res) => {
+    Campground.findByIdAndRemove(req.params.id, (err) => {
         if(err){
             res.redirect('/campgrounds');
         }else{
-            res.redirect('/campground/'+ req.params.id);
+            res.redirect('/campgrounds');   
         }
-    }); 
+    })
 });
 
 

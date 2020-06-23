@@ -1,12 +1,20 @@
 <%- include("./partials/header") %>
- <div class="row" id = "content">
-        <div class="col-md-12">
-            <form class="form-signin" action="/login" method="POST">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8" style="margin: 10vh auto;">
+            <form class="form-signin" action="/login" method="POST" style="margin: 0 auto; width: 60%;">
                 <h1 class="h3 mb-3 font-weight-normal text-center">Login!</h1>
-                <input type="text" id="inputEmail" class="form-control" placeholder="username" name="username" required autofocus>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                <div class="form-group">
+                    <input type="text" id="inputEmail" class="form-control" placeholder="username" name="username" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>                   
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>     
               </form>
         </div>
     </div>  
+</div>
+
 <%- include("./partials/footer") %>

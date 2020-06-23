@@ -6,13 +6,15 @@
     <title>Yelcamp</title>
     <!-- bootstrap cdn -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- customised fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Salsa&display=swap" rel="stylesheet">    
     <!-- customised css -->
     <link rel="stylesheet" href="/stylesheets/main.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand font-weight-bold" href="/">Yelcamp</a>
+        <a class="navbar-brand font-weight-bold" href="/">YelPcamp</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -38,5 +40,16 @@
         </div>
      </div>     
 </nav>
+
+<!-- flash message -->
+<div class="container">
+    <% if(error && error.length > 0){ %>
+        <div class="alert alert-danger"><%= error%></div>
+    <% } %>
+    <% if(success && success.length > 0){%>
+        <div class="alert alert-success"><%= success%></div>    
+    <% }%>        
+</div>
+
      
     

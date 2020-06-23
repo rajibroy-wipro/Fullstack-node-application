@@ -1,3 +1,23 @@
+body{
+    font-family: 'Salsa', cursive;
+}
+
 .card img {
     width: 100%;
 }
+
+.show-btn{
+    margin: 0.5em auto;
+}
+
+
+.btn-group-xs > .btn, .btn-xs {
+
+    padding: .40rem .4rem;
+    font-size: .800rem;
+    line-height: .5;
+    border-radius: .2rem;
+  }
+
+
+  

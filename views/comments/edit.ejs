@@ -1,0 +1,17 @@
+<%- include('../partials/header')%>
+
+<div style="width: 30%; margin: 30px auto;">
+    <h1 class="text-center my-5">Edit Comment</h1>
+    <div >
+        <form class="justify-content-center" action="/campgrounds/<%= campground_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <input class="form-control" type="text" name="comment[text]" value="<%= comment.text%>" required>
+            </div>
+            <button class="btn btn-block btn-info" type="submit">Submit</button>
+        </form>      
+</div>
+
+ 
+
+
+<%- include('../partials/footer')%>
