@@ -26,7 +26,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
 
-
+//mongodb+srv://arvind:22@Arvind@yelpcamp-1vbii.mongodb.net/yelpcamp?retryWrites=true&w=majority
 mongoose.connect(url, {
 	useNewUrlParser: true,
 	useCreateIndex: true
