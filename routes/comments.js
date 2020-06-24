@@ -10,12 +10,11 @@ const middleware = require('../middleware');
 
 // comments new
 router.get('/new', middleware.isLoggedIn, (req, res) => {
-    //find by id
+    //find campground by id
     Campground.findById(req.params.id, (err, foundCampground) => {
         if(err){
             console.log(err);
         }else{
-            console.log(foundCampground);
             res.render('comments/new', {foundCampground: foundCampground});
         }
     });
@@ -29,28 +28,25 @@ router.get('/new', middleware.isLoggedIn, (req, res) => {
              console.log(err);
              res.redirect('/campgrounds');
          }else{
+             // create new comment
              Comment.create(req.body.comment, (err, newCreatedComment) => {
                  if(err){
                     req.flash('error', 'Something went wrong, please try again later');
-                     console.log(err);
+                    console.log(err);
                  }else{
-                     newCreatedComment.author.id = req.user._id;
-                     newCreatedComment.author.username = req.user.username;
-                     newCreatedComment.save();
-                     //add username and id to comment
+                    //add username and id to comment 
+                    newCreatedComment.author.id = req.user._id;
+                    newCreatedComment.author.username = req.user.username;
                     // save comment
-                    //comment.save();
+                    newCreatedComment.save();
+                     // connect new comment to campground
                     foundCampground.comments.push(newCreatedComment);
                     foundCampground.save();
-                    console.log(newCreatedComment);
+                    // redirect to campground show page
                     req.flash('success', 'Comment created');
                     res.redirect('/campgrounds/' + foundCampground._id);    
                  }
              });
-             // create new comment
-             // connect new comment to campground
-             // redirect to campground show page 
-         
          }
      });
  });

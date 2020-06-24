@@ -16,10 +16,27 @@ const seedDB = require('./seeds');
 const commentRoutes = require('./routes/comments');
 const campgroundRoutes = require('./routes/campgrounds');
 const indexRoutes = require('./routes/index');
+const url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp" ;
+
+console.log(url);
+// mongoose config for warning
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 
 
+//  mongodb+srv://arvind:22@Arvind@yelpcamp-1vbii.mongodb.net/yelpcamp?retryWrites=true&w=majority
+mongoose.connect(url, {
+	useNewUrlParser: true,
+	useCreateIndex: true
+}).then(() => {
+	console.log('Connected to DB');
+}).catch(err => {
+	console.log('ERROR:', err.message);
+});
 
-mongoose.connect("mongodb://localhost/yelp_camp");
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));

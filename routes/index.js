@@ -39,12 +39,15 @@ router.get('/login', (req, res) => {
 
 
 // handling login logic
-router.post('/login', passport.authenticate('local',
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local',
     {
         successRedirect: '/campgrounds',
-        failureRedirect: '/login'
-    }), (req, res) => {
-});
+        failureRedirect: '/login',
+        failureFlash: true,
+        successFlash: `Welcome back ${req.body.username} !` 
+    })(req, res);
+});    
 
 //Logout
 router.get('/logout', (req, res) => {
